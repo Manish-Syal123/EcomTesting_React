@@ -1,14 +1,38 @@
 import React, { useState } from "react";
 import "../style/loginstyle.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const SignUp = () => {
-  const [username, setUsername] = useState("");
+  const [name, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = () => {};
-  // console.log(username);
+  const handleRegister = (e) => {
+    e.preventDefault();
+    const user = {
+      name: name,
+      email: email,
+      password: password,
+    };
+
+    //send a post requesst to the backend API
+    axios
+      .post("http://localhost:3004/register", user)
+      .then((resp) => {
+        console.log(resp);
+        navigate("/login");
+        setUsername("");
+        setEmail("");
+        setPassword("");
+      })
+      .catch((error) => {
+        alert("Failed registration: Error occured");
+        console.log("registration failed: ", error);
+      });
+  };
+  // console.log(name);
   // console.log(email);
   // console.log(password);
   return (
@@ -16,7 +40,7 @@ const SignUp = () => {
       <section>
         <div className="form-box">
           <div className="form-value">
-            <form action="" onSubmit={handleSubmit}>
+            <form action="" onSubmit={handleRegister}>
               <h2>Register</h2>
               <div className="inputbox">
                 <ion-icon name="user-inline"></ion-icon>
