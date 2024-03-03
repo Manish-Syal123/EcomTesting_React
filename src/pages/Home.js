@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ProductsItem from "../components/ProductsItem";
+import { useSelector } from "react-redux";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -8,7 +9,9 @@ const Home = () => {
   useEffect(() => {
     const fetchdata = async () => {
       try {
-        const response = await axios.get("https://fakestoreapi.com/products");
+        const response = await axios.get(
+          "https://fakestoreapi.com/products?limit=9"
+        );
         setProducts(response.data);
       } catch (error) {
         console.log("Error fetching fakeproducts: ", error);
@@ -17,7 +20,11 @@ const Home = () => {
     fetchdata();
   }, []);
 
-  console.log("Products", products);
+  // console.log("Products", products);
+
+  const cart = useSelector((state) => state.cart.cart);
+  console.log(cart);
+
   return (
     <>
       <div>
